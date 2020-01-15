@@ -10,9 +10,7 @@ function sign(body) {
 
 const server = http.createServer((req, res) => {
   console.log(req.method, req.url)
-  if (req.method !== 'GET' || req.url !== '/webhook/') {
-    res.end('not found')
-  } else {
+  if (req.url === '/webhook') {
     let buffers = []
     req.on('data', buffer => {
       buffers.push(buffer)
@@ -24,6 +22,8 @@ const server = http.createServer((req, res) => {
       console.log(sign, event, req.headers)
     })
     res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify({ ok: true }))
+  } else {
     res.end(JSON.stringify({ ok: true }))
   }
 })
