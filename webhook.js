@@ -9,23 +9,24 @@ function sign(body) {
 }
 
 const server = http.createServer((req, res) => {
-  console.log(req, res, req.method, req.url)
-  if (req.url === '/webhook') {
-    let buffers = []
-    req.on('data', buffer => {
-      buffers.push(buffer)
-    })
-    req.on('end', buffer => {
-      let body = Buffer.concat(buffers)
-      let event = req.headers['x-gitea-event']
-      let sign = req.headers['HTTP_X_GITEA_SIGNATURE']
-      console.log(sign, event, req.headers)
-    })
-    res.setHeader('Content-Type', 'application/json')
-    res.end(JSON.stringify({ ok: true }))
-  } else {
-    res.end(JSON.stringify({ ok: true }))
-  }
+  console.log(req.method, req.url, req.headers, req.rawHeaders, req.rawTrailers)
+  // if (req.url === '/webhook') {
+  //   let buffers = []
+  //   req.on('data', buffer => {
+  //     buffers.push(buffer)
+  //   })
+  //   req.on('end', buffer => {
+  //     let body = Buffer.concat(buffers)
+  //     let event = req.headers['x-gitea-event']
+  //     let sign = req.headers['HTTP_X_GITEA_SIGNATURE']
+  //     console.log(sign, event, req.headers)
+  //   })
+  //   res.setHeader('Content-Type', 'application/json')
+  //   res.end(JSON.stringify({ ok: true }))
+  // } else {
+  //   res.end(JSON.stringify({ ok: true }))
+  // }
+  res.end(JSON.stringify({ ok: true }))
 })
 
 server.listen(6020, () => {
